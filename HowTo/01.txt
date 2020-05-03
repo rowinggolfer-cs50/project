@@ -1,0 +1,198 @@
+This file documents every step I took to get a working
+python and django environment. 
+
+STEP 1
+======
+
+make a project directory
+
+me@my-comp ~$ mkdir project && cd project
+me@my-comp ~/project $
+
+STEP 2
+======
+
+Create a virtualenv for python.
+This is sensible as it helps keep your system's python environment clean.
+A virtualenv is created by default without any access to site-packages
+and other locally installed modules. This is useful.
+This also ensures you are aware what third party modules you have used,
+which is essential for deployment of your django project to a server
+
+examples in creating a virtualenv.
+
+me@my-comp ~/project $ virtualenv venv
+OR
+me@my-comp ~/project $ virtualenv -p python3 venv
+OR
+me@my-comp ~/project $ virtualenv -p /usr/local/bin/python3.8 venv
+
+(meaning - choose which python to "clone" )
+
+STEP 3
+======
+
+now the project directory looks like this.
+you will also notice my HowTo directory - this file is 01.txt
+including this HowTo.txt file
+ 
+me@my-comp ~/project $ tree -L 2
+.
+├── HowTo
+│   └── 01.txt
+└── venv
+    ├── bin
+    ├── include
+    ├── lib
+    └── share
+
+(tree is a nice tool for seeing directory structures. -L flag indicates depth)
+
+STEP 4
+======
+start your virtual environment and check that the correct python is in use.
+
+me@my-comp ~/project $ source venv/bin/activate
+
+(venv) me@my-comp ~/project $ which python
+me@my-comp ~/project/venv/bin/python
+
+Note - (venv) reassures us that we are in a python virtual environment.
+the executable returned by "which python" confirms it.
+
+STEP 5
+======
+install django - the web framwork for python
+
+*IMPORTANT do this from within the virtualenv*
+*we do not wish to add extraneous packages to our system python!*
+
+to test the venv is running.
+
+(venv) me@my-comp ~/project $ which pip
+/home/me/project/venv/bin/pip
+
+this proves it!
+
+so check pip is latest version, and upgrade if not
+(venv) me@my-comp ~/project $ pip install --upgrade pip
+Requirement already up-to-date: pip in ./venv/lib/python3.8/site-packages (20.1)
+
+
+(venv) me@my-comp ~/project $ pip install django
+
+OPTIONAL STEP
+to test all is well with your django install do the following
+(venv) me@my-comp ~/project $ python
+Python 3.8.2 (default, May  3 2020, 18:03:28) 
+[GCC 9.2.1 20191008] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import django
+>>> django.__version__
+'3.0.5'
+
+
+STEP 6
+======
+
+Finally - we are ready to start our django project.
+(venv) me@my-comp ~/project $ django-admin startproject cs50
+
+this will create a directory cs50 with the following contents
+
+(venv) me@my-comp ~/project (master #%) $ tree cs50/
+cs50/
+├── cs50
+│   ├── asgi.py
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+└── manage.py
+
+1 directory, 6 files
+
+
+We will examine this files later.
+
+STEP 7
+======
+
+now we are ready to run the django test server, and visit the 
+website it produces in our web-browser.
+
+to do this, cd into the new cs50 directory and run the 
+"python manage.py runserver" (something we will be doing a lot!)
+
+(venv) me@my-comp ~/project $ cd cs50
+(venv) me@my-comp ~/project/cs50 $ python manage.py runserver
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 17 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, contenttypes, sessions.
+Run 'python manage.py migrate' to apply them.
+
+May 03, 2020 - 18:36:18
+Django version 3.0.5, using settings 'cs50.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+
+
+open a webbrowser and navigate to 
+http://127.0.0.1:8000
+
+SCREENSHOT OF WEBBROWSER = howto-image-001.png
+
+STEP 8 (optional)
+=================
+
+probably now is a good time to get this project under version control.
+
+me@my-comp ~/project/cs50 $ git init .
+Initialised empty Git repository in /home/me/project/cs50/.git
+
+create a .gitignore with the following content
+
+*.py[cod]
+__pycache__
+venv/
+resources/
+
+then check what you are committing, and commit.
+
+
+me@my-comp ~/project $ git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	.gitignore
+	HowTo.txt
+	cs50/
+
+nothing added to commit but untracked files present (use "git add" to track)
+me@my-comp ~/project $ git add .
+me@my-comp ~/project $ git commit -m "initial commit. django project initiated."
+[master (root-commit) 7a43db3] initial commit. django project initiated.
+ 9 files changed, 370 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 HowTo.txt
+ create mode 100644 cs50/cs50/__init__.py
+ create mode 100644 cs50/cs50/asgi.py
+ create mode 100644 cs50/cs50/settings.py
+ create mode 100644 cs50/cs50/urls.py
+ create mode 100644 cs50/cs50/wsgi.py
+ create mode 100644 cs50/db.sqlite3
+ create mode 100755 cs50/manage.py
+
+
+notice the file "db.sqlite3" this file was created when we ran the test server
+the file is currentl empty 0 bytes.
+more on this in the next howto
+
+(this HowTo/01.txt, is in my initial commit for this project!)
