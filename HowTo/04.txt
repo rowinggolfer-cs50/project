@@ -1,0 +1,25 @@
+Currently our "website" has a holding page
+http://127.0.0.1:8000
+
+and an admin page which requests a username and password
+http://127.0.0.1:8000/admin/
+
+However we have no users in our database, so username and password does not
+exist.
+So perhaps a logical next step is to create ourselves a user.
+This is done using the following command.
+
+
+(venv) me@my-comp ~/project/cs50 (master) $ python manage.py createsuperuser
+Username (leave blank to use 'neil'): admin
+Email address: rowinggolfer@gmail.com        
+Password: 
+Password (again): 
+Superuser created successfully.
+
+this updates the database and we can now login.
+
+as the database has changed, time to do another git commit.
+
+
+Now - finally, we can move on to creating some content.
