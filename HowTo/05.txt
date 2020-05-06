@@ -1,0 +1,208 @@
+Time to add some content.
+
+Currently (with the test server running) when we visit http://127.0.0.1:8000 we
+get a holding page.
+
+Time to change that.
+
+Old school websites used to have a structure like this.
+
+root
+├── images
+│   ├── img-01.jpg
+│   └── img-02.jpg
+├── index.html
+└── tutorial.html
+
+visiting a directory with a webbrowser would either show the contents of the
+directory, or, if a file named index.htm or index.html was present it would
+display the contents of that file.
+
+Django does things differently.
+When we visit http://127.0.0.1:8000/ django searches a tree of urlpatterns
+provided by urls.py in the root directory.
+These patterns point to a "view" which in django is a python function.
+
+our current urls.py, created when we ran python startproject reads as follows.
+
+"""cs50 URL Configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/3.0/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+]
+
+
+
+That's a long (but informative) docstring followed by 3 lines of code.
+
+We COULD add the following to urlpatterns.
+
+from cs50 import views
+
+urlpatterns = [
+    path('', views.indexview),
+    path('admin/', admin.site.urls),
+]
+
+but to do so is probably not optimal as we would need to write a views.py in our
+root folder, and then we have not only contaminated our pristine directory, but
+we would quickly have further issues as to where to put our image resources, css
+files etc..
+
+one way around this is to create a django app called "home" or "index", which is 
+a separate folder, and may become a template for any future websites we create.
+after all, all sites need an index page and (arguably) a 404 page.
+
+this is also consistent with the way the "admin" app has been incorporated into
+our django project. and it is better to keep changes in the root project to an
+absolute minimum. so let's change our urls.py to the following.
+
+from django.contrib import admin                                                
+from django.urls import include, path        # <- add "include" to this import
+
+urlpatterns = [                                                                 
+    path('', include('index.urls'),
+    path('admin/', admin.site.urls),                                            
+]      
+
+
+note the quotes around 'index.urls'. this is a lazy import.
+index, of course, does not exist yet, so let's create it using startapp and see 
+what is created for us.
+
+There is one final step. If we are creating an app called "index" we need to let
+our project know it exists. We do that by adding it to our list of
+INSTALLED_APPS in settings.py.
+
+So edit that file so that it looks like this.
+
+INSTALLED_APPS = [
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "index",                           # <- the only change from default.
+]
+
+
+(venv) me@my-comp ~/project/cs50 $ python manage.py startapp index
+(venv) me@my-comp ~/project/cs50 $ tree index
+index
+├── admin.py
+├── apps.py
+├── __init__.py
+├── migrations
+│   └── __init__.py
+├── models.py
+├── tests.py
+└── views.py
+
+1 directory, 7 files
+
+
+
+OK. that looks good, our index folder is a python package (note the __init__.py) 
+but there is no urls.py contained, so our import won't work.
+
+also note that views.py exists, but is empty.
+
+to get our homepage up and running we need to put create index/urls.py and put the 
+following code in.
+
+
+'''
+urls.py for my cs50 index django-app
+'''
+from django.urls import path
+
+import .views
+
+urlpatterns = [
+    path('', views.IndexView.as_view(), name="homepage"),
+]
+
+
+now open index/views.py and make it look like the following
+
+'''
+views.py for cs50 project index app
+'''
+
+from django.views.generic import TemplateView
+
+
+class IndexView(TemplateView):
+    template_name = "index.html"
+
+
+
+
+Note - we are using django's "class based views" which I prefer, but are
+somewhat controversial. Read about this at this:
+https://docs.djangoproject.com/en/3.0/topics/class-based-views/
+
+
+Finally, we need to create the html template which is referred to above by our
+IndexClass.
+
+Django looks for templates in "App folders" by default, and because we have
+added our index app to settings.py, it will be looking for the existence of a
+templates directory in our index folder.
+So create this directory, and put a file named "index.html" inside it. For now,
+lets' put some really basic html into that file. With apologies to apache2, the
+contents of my index,html file at this point is "<h1>It works!</h1>" (without
+quotes).
+
+Run the test server again, and visit http://127.0.0.1:8000 and you should see 
+It works!
+
+(You are probably thinking at this point - that is one hell of a lot of work to
+get to this point. You are quite correct. However, the power of django can now
+be unleashed as we use template ineritance, database functionality etc....).
+
+
+At this point - our project looks like this.
+
+
+
+├── cs50
+│   ├── asgi.py
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── db.sqlite3
+├── index
+│   ├── admin.py
+│   ├── apps.py
+│   ├── __init__.py
+│   ├── migrations
+│   │   ├── __init__.py
+│   ├── models.py
+│   ├── templates
+│   │   └── index.html
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── manage.py
+└── secrets
+    └── secret_key.txt
+

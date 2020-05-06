@@ -1,0 +1,67 @@
+SUMMARY OF STEPS TO GET A VERY BASIC DJANGO WEBSITE RUNNING
+===========================================================
+
+1.  Create a python virtualenv       (optional, but HIGHLY recommended)
+    ~/ $ virtualenv -p python3 venv
+
+2.  activate the virtualenv
+    ~/ $ source venv/bin/activate
+
+3.  install django into that venv folder
+    (venv) ~/ $ pip install django
+
+4.  choose a name and start your project
+    (venv) ~/ $ django-admin startproject my-website
+
+5.  keep your secrets safe. (move SECRET_KEY out of settings.py)
+    (venv) ~/ $ cd my-website
+    (venv) ~/my-website $ mkdir secrets
+    (venv) ~/my-website $ grep SECRET_KEY settings.py > secrets/secret_key.txt
+
+    and edit settings.py putting in the following lines.
+
+     # Use a separate file for the secret key
+     with open('/path/to/secrets/secret_key.txt') as f:
+         SECRET_KEY = f.read().strip()
+
+6.  run migrations for the first time, so that your database is created.
+    (venv) ~/my-website $ python manage.py migrate
+
+7.  create a superuser for yourself so you can use the admin functionality
+    (venv) ~/my-website $ python manage.py createsuperuser
+
+8.  add your first page by creating an index app
+    (venv) ~/my-website $ python manage.py startapp index
+
+9.  make the project aware of your new app by adding "index" to 
+    INSTALLED_APPS in settings.py
+
+10. create a file named urls.py to the index folder. Give it the following
+    content.
+
+    from django.urls import path
+    import .views
+    urlpatterns = [path('', views.IndexView.as_view(), name="homepage")]
+
+11. edit views.py in the index folder. Give it the following content.
+
+    from django.views.generic import TemplateView
+    class IndexView(TemplateView):
+        template_name = "index.html"
+
+12. create a subfolder named "templates" in the index folder, and put a
+    simple index.html file inside it.
+
+13. edit urls.py in your main project folder, so it looks like this.
+
+    from django.contrib import admin                                                
+    from django.urls import include, path
+    urlpatterns = [                                                                 
+        path('', include('index.urls'),
+        path('admin/', admin.site.urls),                                            
+    ]      
+
+14. test everything is correct by running the test server.
+    (venv) ~/my-website $ python manage.py runserver
+
+    and, if no error messages, visit http://127.0.0.1:8000 with a browser.
