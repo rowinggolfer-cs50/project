@@ -1,0 +1,79 @@
+At this stage we have a working website, and access to the django admin app.
+
+http://127.0.0.1:8000/admin/
+
+the next step may well be to allow users to create accounts on the site, setting
+and modifying passwords, functionality for password recovery, 2 stage
+authentication etc...
+
+However, that is beyond the scope of what I am doing within my project, so to
+allow a VERY simple login system I am just going to resuse the LoginView and
+LogoutView provided by the auth system. This means that only I, using the admin
+app and the superuser I created, can add users. This suffices for the site I am
+about to create, which is an application for holding patient data for myelf and
+dental colleagues during the corona lockdown where we need to work at home.
+
+To do this I need to alter 3 files.
+
+cs50/urls.py
+index/templates/index.html 
+settings.py
+
+1. urls.py
+    
+    # Add the following imports.
+
+    from django.contrib.auth.views import LoginView, LogoutView
+    
+    # and add these two paths to urlpatterns.
+
+    path('login/', LoginView.as_view(template_name='admin/login.html'), name="my-login"),
+    path('logout/', LogoutView.as_view(), name="my-logout"),
+
+
+the whole file should now look like this.
+
+    from django.contrib import admin
+    from django.contrib.auth.views import LoginView, LogoutView
+    from django.urls import path
+    from django.urls import include
+
+    urlpatterns = [
+        path('', include('index.urls')),
+        path('login/', LoginView.as_view(template_name='admin/login.html'),
+            name="my-login"),
+        path('logout/', LogoutView.as_view(), name="my-logout"),
+        path('admin/', admin.site.urls),
+    ]
+
+2. index.html
+
+    # insert some logic into the template to show different text to 
+    # a logged in user.
+    
+
+    <h1>It Works!</h1>
+    {% if user.is_authenticated %}
+        Hello {{ user.username }}.<br />
+        Thanks for logging in.<br />
+        <a href="{% url 'my-logout' %}">Logout</a>
+    {% else %}
+        Please <a href="{% url 'my-login' %}">Login</a>
+    {% endif %}
+
+3. settings.py
+    # to ensure users are directed back to our homepage, we have to change some
+    # default variables.
+    # append this to the bottom of the file. 
+
+    LOGIN_URL = 'my-login'
+    LOGIN_REDIRECT_URL = "homepage"
+    LOGOUT_REDIRECT_URL = "homepage"
+
+That's it. I can log in using my superuser credentials, and log out again.
+Once logged in I can create other username/password "normal" users by visiting 
+http://127.0.0.1:8000/admin/auth/user/add/
+
+That's really it for the basic site. I am ready to start adding other apps. I am
+going to add 2 apps. "tutorial" which explains what I have done and "dentist"
+which will become my database of dental notes.

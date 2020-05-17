@@ -1,1 +1,14 @@
 <h1>It Works!</h1>
+
+{% if user.is_authenticated %}
+
+    Hello {{ user.username }}.<br />
+    Thanks for logging in.<br />
+    <a href="{% url 'my-logout' %}">Logout</a>
+
+{% else %}
+
+    Please <a href="{% url 'my-login' %}">Login</a>
+
+{% endif %}
+

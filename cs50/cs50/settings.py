@@ -125,3 +125,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = "/static/"
+
+# a few fixes for our login functionality
+LOGIN_URL = 'my-login'
+# default value is /accounts/profile/ 
+# but we don't want that!
+LOGIN_REDIRECT_URL = "homepage"
+LOGOUT_REDIRECT_URL = "homepage"
