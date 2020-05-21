@@ -1,0 +1,150 @@
+TEMPLATE INHERITANCE.
+
+The website I have created is pretty ugly at this point, with no branding or
+styles. 
+In truth, apart from our abaility to log in, we have achieved nothing that
+couldn't be achieved by an old-school directory of html files.
+
+Time to lever one of the biggest advantages of django over such an approach -
+template inheritance.
+
+It is standard practice to have a template named base.html, and make all other
+templates inherit from this.
+
+
+base html can then include all the 'boiler plate' code for links to css,
+javascript libraries etc, and having this in one place makes for sane management
+of the website as these libraries get updated.
+
+So I am going to alter my index.html template to look like this.
+
+
+    {% extends 'base.html' %}
+
+    {% block content %}
+
+    {% if user.is_authenticated %}
+
+        Hello {{ user.username }}.<br />
+        Thanks for logging in.<br />
+        <a href="{% url 'my-logout' %}">Logout</a>
+
+    {% else %}
+
+        Please <a href="{% url 'my-login' %}">Login</a>
+
+    {% endif %}
+
+    {% endblock %}
+
+
+and, as I am going to use the popular bootstrap css library (originally
+developed by Twitter), my base.html template will be as follows.
+
+Modified from 
+https://startbootstrap.com/templates/bare/
+and
+https://getbootstrap.com/
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="RowingGolfer's CS50 project">
+  <meta name="author" content="Neil Wallace ">
+
+  <title>RowingGolfer's CS50 project</title>
+
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" 
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" 
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" 
+      crossorigin="anonymous">
+
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'homepage' %}">
+          RowingGolfer's CS50 Project
+      </a>
+      <button class="navbar-toggler" 
+              type="button" 
+              data-toggle="collapse" 
+              data-target="#navbarResponsive" 
+              aria-controls="navbarResponsive" 
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'homepage' %}">Home
+            </a>
+          </li>
+          <li class="nav-item">
+{% if user.is_authenticated %}
+                <a class="nav-link" 
+                   href="{% url 'my-logout' %}">Logout</a>
+{% else %}
+                <a class="nav-link" 
+                   href="{% url 'my-login' %}">Login</a>
+{% endif %}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+        <br /> <!-- a little padding -->
+
+        {% block content %}
+
+        <h1> YOUR CONTENT HERE </h1>
+
+        {% endblock %}
+
+  </div>
+
+<!-- Bootstrap core JavaScript -->
+<!-- JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" 
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" 
+        crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" 
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" 
+        crossorigin="anonymous">
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" 
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" 
+        crossorigin="anonymous">
+</script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+Now my website has all the beauty and familiarity of a bootstrap website.
+It is also responsive.
+
+The html above is complicated, but it will remain solely in the base.html file,
+making all other templates much more readable.

@@ -1,4 +1,6 @@
-<h1>It Works!</h1>
+{% extends 'base.html' %}
+
+{% block content %}
 
 {% if user.is_authenticated %}
 
@@ -12,3 +14,4 @@
 
 {% endif %}
 
+{% endblock %}
