@@ -20,6 +20,7 @@ from django.urls import include
 
 urlpatterns = [
     path('', include('index.urls')),
+    path('covid', include('covid.urls')),
     path('login/', LoginView.as_view(template_name='admin/login.html'),
          name="my-login"),
     path('logout/', LogoutView.as_view(), name="my-logout"),

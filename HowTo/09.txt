@@ -1,0 +1,65 @@
+Covid django app.
+
+As a dentist in Scotland, the covid-19 virus brought my business to a close.
+This is why I started on the cs50 course!
+
+However, it also created a need for some new software. We had to set up a dental
+helpline and take calls from patients, making notes, and having those notes
+available for all team-members.
+
+Here's how I did it.
+
+    (venv) ~/my-website $ python manage.py startapp covid
+
+and integrate this new app into my project.
+
+1. add to the main project urls.py urlpatterns
+    path('covid', include('covid.urls')),
+
+    NOTE - (covid.urls does not yet exist!)
+
+2. add "covid" to INSTALLED_APPS in settings.py
+
+3. put a link to the covid homepage from our index homepage.
+
+    <a href="{% url 'covid-homepage' %}">
+        Covid Dental Notes
+    </a>
+
+4. create urls.py in the covid app.
+
+    '''
+    urls.py for my cs50 covid django-app
+    '''
+    from django.urls import path
+
+    from . import views
+
+    urlpatterns = [
+        path('', views.IndexView.as_view(), name="covid-homepage"),
+    ]
+
+5. edit covid/views.py
+    NOTE - templates for this new app use a directory structure to prevent
+    collisions.
+    
+    '''
+    views.py for cs50 project covid app
+    '''
+    from django.views.generic import TemplateView
+
+    class IndexView(TemplateView):
+        template_name = "covid/index.html"
+
+6. create that template dir.
+    (venv) ~/my-website $ mkdir -p covid/templates/covid
+
+7. create a template covid/templates/covid/index.html
+
+    {% extends 'base.html' %}
+
+    {% block content %}
+    <h4>Covid Homepage</h4>
+    {% endblock %}
+
+8. run the test server to check all is well.
