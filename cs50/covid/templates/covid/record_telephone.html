@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<h3>
+    View Telephones
+</h3>
+<h4>
+    Record for {{ RECORD.name }}.
+</h4>
+<p>
+The following telephones are associated with this record.<br />
+Multiple names allow for work, home etc.....<br />
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Number</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for phone in RECORD.telephones.all %}
+    <tr>
+        <td>{{ phone.number }}</td>
+        <td>
+            <a href="{{ phone.get_edit_url }}" title="Edit Telephone">
+                <img src='{% static "covid/pencil.png" %}' />
+                Edit Number
+            </a>
+            &nbsp;
+            &nbsp;
+            <a href="{{ phone.get_delete_url }}" title="Delete Telephone">
+                <img src='{% static "covid/eraser.png" %}' />
+                Delete Number
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td colspan="2">
+            <a class="btn btn-warning" 
+               href="{{ RECORD.get_add_telephone_url }}" title="Add Telephone">
+                Add a new telephone number to this record.
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a class="btn btn-primary" href="{{ RECORD.get_absolute_url }}">
+    Back to Record
+</a>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>
+     Add an Action 
+</h3>
+<h4>
+    Record {{ ACTION.record.id }} for {{ ACTION.record.name }}.
+</h4>
+<form action='' method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <table class="table">
+        {{ form.as_table }}
+        <td>
+            <a href="{{ view.get_success_url }}" class="btn btn-primary" value="Cancel">
+                Cancel
+            </a>
+        </td>
+        <td>
+        <input class="btn btn-warning" type="submit" value="Update Action">
+        </td>
+    </table>
+</form>
+{% endblock %}

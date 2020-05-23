@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>
+    Edit Email   
+</h3>
+<h4>
+Record for {{ RECORD.name }}.
+</h4>
+<p>
+Please check and edit the following email details.
+</p>
+<form action='' method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <table class="table">
+        {{ form.as_table }}
+        <td>
+            <a href="{{ view.get_success_url }}" class="btn btn-primary" value="Cancel">
+                Cancel
+            </a>
+        </td>
+        <td>
+        <input class="btn btn-warning" type="submit" value="Update Record">
+        </td>
+    </table>
+</form>
+{% endblock %}

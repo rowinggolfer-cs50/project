@@ -1,5 +1,91 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% load covid_auth_extras %}
+{% load static %}
 
 {% block content %}
-<h4>Covid Homepage</h4>
+<h3>
+    Covid Database
+</h3>
+{% if user.is_authenticated %}
+    <p>
+    You are logged in as {{ user.username }}.
+    </p>
+
+        {% if not user|has_covid_write_perms %}
+                <p>
+                <strong>WARNING</strong>
+                {{ user }} is a "read only" user. You can not create records.<br />
+                Should you wish to do so, please see 
+                <a href="{% url 'covid-help' %}">the help page </a>
+                </p>
+        {% endif %}
+
+        <p>
+        What do you wish to do?
+        </p>
+
+        <ul>
+            <li>
+                <a href="{% url 'covid-new-record' %}">
+                    Search / Create Record
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'covid-records' %}">
+                    View Patient Record List (ordered by time of creation)
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'covid-patients' %}">
+                    View Patient Record List (alphabetical)
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'covid-recent-notes' %}">
+                    Recent Notes (last 7 days)
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'covid-view-actions' %}">
+                    View List of actions
+                </a>
+                (Urgent, routine and completed).
+            </li>
+            </ul>
+            <h4>Resources</h4>
+            <ul>
+            <li>
+                <a href="{% url 'pharmacy' %}"
+                title="pharmacy list">
+                    Pharmacy List (addresses, phone, fax, email)
+                </a>
+            </li>
+            <li>
+                <a href="{% static 'covid/UDC-Referral-Form-V6.docx' %}">
+                    UDC-Referral-Form-V6 (docx)
+                </a>
+                released 18th May 2020
+            </li>
+            <li>
+                <a href=
+                "{% static 'covid/SDCEP-MADP-COVID-19-drug-supplement-update-110520.pdf' %}">
+                    SDCEP Covid-19 antibiotic and analgesic update (pdf).
+                </a>
+            </li>
+            </ul>
+            <h4>Monitoring</h4>
+            <ul>
+            <li>
+                <a href="{% url 'covid-activity' %}"
+                title = "Activity Tracker">
+                    Graphical representation of covid activity
+                </a>
+            </li>
+            </ul>
+
+{% else %}
+    Sorry, you do not have permission to view this page.
+{% endif %}
+
 {% endblock %}

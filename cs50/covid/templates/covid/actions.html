@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<h3>
+    View Actions
+</h3>
+<h4>
+    Record for {{ RECORD.name }}.
+</h4>
+<p>
+The following actions are associated with this record.
+</p>
+<table class="table">
+    <tr>
+        <th>Action</th>
+        <th>Date Created</th>
+        <th>Urgent</th>
+        <th>Completed</th>
+    </tr>
+    {% for action in RECORD.actions.all %}
+    <tr>
+        <td>{{ action.action }}</td>
+        <td>
+            <a href="{{ action.get_edit_url }}" title="Edit Action">
+                <img src='{% static "covid/pencil.png" %}' />
+                Edit Action
+            </a>
+        </td>
+        <td>
+            {% if action.is_urgent %}
+            <img src='{% static "covid/urgent.png" %}' />
+            {% endif %}
+            {{ action.is_urgent }}
+        </td>
+        <td>
+            {{ action.is_completed }}
+        </td>
+    </tr>
+
+    {% endfor %}
+</table>
+
+<a class="btn btn-warning" 
+   href="{{ RECORD.get_add_action_url }}" title="Add Action">
+    New Action
+</a>
+&nbsp;
+<a class="btn btn-primary" href="{{ RECORD.get_absolute_url }}">
+    Back to
+    Record
+</a>
+{% endblock %}

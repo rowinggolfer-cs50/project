@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<h3>
+   Patient List (alphabetical). ({{ PATIENTS.count }} patients)
+</h3>
+<p>
+
+</p>
+<div class="table-responsive">
+<table class="table table-striped table-sm">
+    <tr>
+        <th>Name</th>
+        <th>Date of Birth</th>
+        <th>Dentist</th>
+        <th>Record</th>
+        <th>Last Note</th>
+    </tr>
+    {% for patient in PATIENTS %}
+    <tr>
+        <td>{{ patient.surname }}, {{ patient.first_name }}</td>
+        <td>{{ patient.record.dob }}</td>
+        <td>{{ patient.record.dentist }}</td>
+        <td>
+            <a href="{{ patient.record.get_absolute_url }}">
+                Open
+            </a>
+            {% if patient.record.has_urgent_actions %}
+                <a href="{{ patient.record.view_all_actions_url }}" 
+                title="{{ patient.record.actions_as_list|safe }}">
+                    <img src='{% static "covid/urgent.png" %}' />
+                </a>
+            {%elif patient.record.has_actions %}
+                <a href="{{ patient.record.view_all_actions_url }}" 
+                title="{{ patient.record.actions_as_list|safe }}">
+                    <img src='{% static "covid/pencil.png" %}'  />
+                </a>
+            {% endif %}
+        </td>
+        <td>
+            {{ patient.record.last_note_initials }}
+            -
+            {{ patient.record.recent_note_date | safe}}
+            {{ patient.record.last_note_date}}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+{% endblock %}

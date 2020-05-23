@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>
+    Covid Database - help
+</h3>
+<p>
+This database provides functionality to record conversations, treatments and
+outcomes provided by your cluster of dentists.
+</p>
+
+{% if user.is_authenticated %}
+    <p>
+    Hello {{ user.username }}.<br />
+    You are recognised on the system.<br />
+    You have permission to read data
+    {% if user.has_write_permission %}
+        and write data.
+    {% else %}
+    but you are <strong>NOT</strong> permitted to write data.</p>
+    <p>
+    If you believe you should have permission to do so, please contact
+    <a href=
+    "mailto:{{ SYSADMIN_EMAIL }}?subject=covid access for {{ user.username }}">
+        {{ SYSADMIN_EMAIL }}
+    </a>
+    and request this permission.
+    {% endif %}
+    </p>
+
+{% else %}
+    <h4>How to get an account.</h4>
+    <p>
+    Dentists/practice managers needing to simply view records should contact
+    <a href="mailto:{{ SYSADMIN_EMAIL }}rowinggolfer+cs50@gmail.com?subject=covid_access">
+        {{ SYSADMIN_NAME }}
+    </a>
+    for a view-only login.
+    </p>
+    <p>
+    Dentists on call (needing to create/access patient records and 
+    write notes) - should also request write permission.
+    </p>
+{% endif %}
+
+{% endblock %}

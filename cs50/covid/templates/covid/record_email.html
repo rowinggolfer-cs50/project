@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<h3>
+    View Emails
+</h3>
+<h4>
+    Record for {{ RECORD.name }}.
+</h4>
+<p>
+The following emails are associated with this record.<br />
+Multiple names allow for work, home etc.....<br />
+</p>
+<table class="table">
+    <tr>
+        <th>Email</th>
+        <th></th>
+    </tr>
+    {% for email in RECORD.emails.all %}
+    <tr>
+        <td>{{ email.email }}</td>
+        <td>
+            <a href="{{ email.get_edit_url }}" title="Edit Email">
+                <img src='{% static "covid/pencil.png" %}'/>
+                Edit Email
+            </a>
+            <td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td colspan="5">
+            <a class="btn btn-warning" 
+               href="{{ RECORD.get_add_email_url }}" title="Add Email">
+            Add a new email to this record.
+            </a>
+        </td>
+    </tr>
+</table>
+<a class="btn btn-primary" href="{{ RECORD.get_absolute_url }}">
+    Back to
+    Record
+</a>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>
+    Edit Medical History {{ MEDHIST.id }} - {{ MEDHIST.record.name }}.
+</h3>
+<form action='' method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <table class="table table-sm">
+        {{ form.as_table|safe }}
+        <tr>
+        <td>
+            <a href="{{ view.get_success_url }}" class="btn btn-primary" value="Cancel">
+                Cancel
+            </a>
+        </td>
+        <td>
+        <input class="btn btn-warning" type="submit" value="Update Record">
+        </td>
+        </tr>
+    </table>
+</form>
+
+
+
+{% endblock %}

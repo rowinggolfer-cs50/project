@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<h3>
+    View Names
+</h3>
+<h4>
+    Record for {{ RECORD.name }}.
+</h4>
+<p>
+The following names are associated with this record.<br />
+Multiple names allow for pseudonyms, changes with Marriage etc..<br />
+ALL names are searched when searching the database.
+</p>
+<p>
+If using more than one name, please set a "default" name for this patient
+record.
+</p>
+<table class="table">
+    <tr>
+        <th>Title</th>
+        <th>First Name</th>
+        <th>Middle Name</th>
+        <th>Surname</th>
+        <th>Is Default?</th>
+        <th></th>
+        {% for name in RECORD.name_set.all %}
+    </tr>
+    <tr>
+        <td>{{ name.title }}</td>
+        <td>{{ name.first_name }}</td>
+        <td>{{ name.middle_name|default_if_none:"" }}</td>
+        <td>{{ name.surname }}</td>
+        <td>{{ name.is_default }}</td>
+        <td>
+            <a href="{{ name.get_edit_url }}" title="Edit Name">
+                <img src='{% static "covid/pencil.png" %}' />
+                Edit Name
+            </a>
+            <td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td colspan="5">
+            <a class="btn btn-warning" 
+               href="{{ RECORD.get_add_name_url }}" title="Add Name">
+            Add a new name or pseudonym to this record.
+            </a>
+        </td>
+    </tr>
+</table>
+<a class="btn btn-primary" href="{{ RECORD.get_absolute_url }}">
+    Back to
+    Record
+</a>
+{% endblock %}

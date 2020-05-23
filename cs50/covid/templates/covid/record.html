@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% load covid_auth_extras %}
+{% load static %}
+
+{% block content %}
+<h4>
+    Patient Record
+</h4>
+<div class="row">
+    <div class="col-12 col-md-8">
+<table class="table table-sm">
+    <tr>
+        <th class='text-right'>Name :</th>
+        <td>{{ RECORD.name }}</td> 
+        {% if user|has_covid_write_perms %}
+        <td>
+            <a class="d-inline-flex" href="{{ RECORD.view_names_url }}" title="View Name(s)">
+                <img src='{% static "covid/eyeball.png" %}' />
+                <span class="d-none d-lg-block">
+                View Name(s)
+                </span>
+            </a>
+            <td>
+                {% endif %}
+    </tr>
+    <tr>
+        <th class='text-right'>Date of Birth :</th>
+        <td>{{ RECORD.dob }}</td>
+        {% if user|has_covid_write_perms %}
+        <td rowspan="4">
+            <a class="d-inline-flex" href="{{ RECORD.get_edit_url }}" title="Edit Record">
+                <img src='{% static "covid/pencil.png" %}' />
+                <span class="d-none d-lg-block">
+                Edit params
+                </span>
+            </a>
+            <td>
+                {% endif %}
+    </tr>
+    <tr>
+        <th class='text-right'>CHI :</th>
+        <td>{{ RECORD.chi|default_if_none:"" }}</td>
+    </tr>
+    <tr>
+        <th class='text-right'>Alt Ref :</th>
+        <td>{{ RECORD.alt_ref|default_if_none:"" }}</td>
+    </tr>
+    <tr>
+        <th class='text-right'>Regular Dentist :</th>
+        <td>{{ RECORD.dentist|default_if_none:"" }}</td>
+    </tr>
+    <tr>
+        <th class='text-right'>Address(es) :</th>
+        <td>{{ RECORD.all_addresses|safe }}</td>
+        {% if user|has_covid_write_perms %}
+        <td>
+            <a class="d-inline-flex" href="{{ RECORD.view_addresses_url }}" title="View Address">
+                <img src='{% static "covid/eyeball.png" %}' />
+                <span class="d-none d-lg-block">
+                View Address(es)
+                </span>
+            </a>
+            <td>
+                {% endif %}
+    </tr>
+    <tr>
+        <th class='text-right'>Telephone(s) :</th>
+        <td>{{ RECORD.telephone_numbers|safe }}</td>
+        {% if user|has_covid_write_perms %}
+        <td>
+            <a class="d-inline-flex" href="{{ RECORD.view_telephones_url }}" title="View Telephone">
+                <img src='{% static "covid/eyeball.png" %}' />
+                <span class="d-none d-lg-block">
+                View Telephone(s)
+                </span>
+            </a>
+            <td>
+                {% endif %}
+    </tr>
+    <tr>
+        <th class='text-right'>Email(s) :</th>
+        <td>{{ RECORD.email_addresses|safe }}</td>
+        {% if user|has_covid_write_perms %}
+        <td>
+            <a class="d-inline-flex" href="{{ RECORD.view_emails_url }}" title="View Email">
+                <img src='{% static "covid/eyeball.png" %}' />
+                <span class="d-none d-lg-block">
+                View Emails(s)
+                </span>
+            </a>
+            <td>
+                {% endif %}
+    </tr>
+</table>
+    </div>
+    <div class="col-12 col-md-4">
+<h5>
+    Follow Up Actions Required
+</h5>
+{% if RECORD.actions.count > 0 %}
+    <a href="{{ RECORD.view_all_actions_url }}" 
+    title="View Actions">
+        <img src='{% static "covid/eyeball.png" %}' />
+        View Actions (including completed)
+    </a>
+{% else %}
+    {% if user|has_covid_write_perms %}
+        <a href="{{ RECORD.get_add_action_url }}" title="Add Action">
+            <img src='{% static "covid/pencil.png" %}' />
+            Add an action
+        </a>
+    {% endif %}
+{% endif %}
+<ul>
+    {% for action in RECORD.incomplete_actions %}
+    <li>
+        {% if action.is_urgent %}
+        <img src='{% static "covid/urgent.png" %}' 
+             alt="URGENT ACTION"/>
+        <strong>
+            {{ action.action }}
+        </strong>
+        {% else %}
+        {{ action.action }}
+        {% endif %}
+    </li>
+    {% empty %}
+    <li>no current actions required.</li>
+    {% endfor %}
+</ul>
+    </div>
+</div>
+<hr />
+{% if RECORD.has_multiple_medhists %}
+    <strong>
+    WARNING - MULTIPLE MEDICAL HISTORIES PRESENT
+    </strong>
+    <a href="{{ RECORD.view_record_medhists_url }}" 
+        title="View Medical Histories">
+    <img src='{% static "covid/eyeball.png" />
+    View All Medical Histories
+    </a>
+{% endif %}
+{% if RECORD.has_no_medhists %}
+    <strong>
+    No Medical History has been recorded.
+    </strong>
+    {% if user|has_covid_write_perms %}
+        <a href="{{ RECORD.get_add_mh_url }}" title="Add a new Medical History">
+            <img src='{% static "covid/pencil.png" />
+            Add a New Medical History
+        </a>
+    {% endif %}
+{% else %}
+    <table class="table table-sm">
+    <tr class="table-primary">
+        <th colspan="2">
+            Medical history taken by 
+            {{ RECORD.medhist_author }} 
+            {{ RECORD.medhist_date }} 
+        {% if user|has_covid_write_perms %}
+            <a href="{{ RECORD.medhist_edit_url }}" 
+               title="Edit this Medical History">
+                <img src='{% static "covid/pencil.png" %}' />
+                Edit Medical History
+            </a>
+        {% endif %}
+        </th>
+    </tr>
+    {{ RECORD.medhist_as_table|safe }}
+    </table>
+{% endif %}
+<hr />
+<h4>
+    Notes
+</h4>
+{% if user|has_covid_write_perms %}
+<a href="{{ RECORD.get_add_note_url }}" title="Add a new note">
+    <img src='{% static "covid/pencil.png" %}' />
+    Add a Note
+</a>
+{% endif %}
+<table class="table table-sm table-bordered table-striped">
+    {{ RECORD.notes_as_table|safe }}
+</table>
+{% endblock %}

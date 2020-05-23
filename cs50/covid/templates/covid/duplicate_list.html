@@ -1,0 +1,31 @@
+<h4>Date of Birth Matches</h4>
+<ul>
+    {% for record in DOB_DUPLICATES %}
+    <li>
+        <strong>{{ record.name }}</strong><br />
+        <a class="btn btn-primary" href="{{ record.get_absolute_url }}">
+            Open
+        </a>
+        Date of Birth : {{ record.dob }}
+    </li>
+    {% empty %}
+        None found.
+    {% endfor %}
+</ul>
+<hr />
+
+
+<h4>Name Matches</h4>
+<ul>
+    {% for name in NAME_DUPLICATES %}
+    <li>
+        <strong>{{ name.name }}</strong><br />
+        <a class="btn btn-primary" href="{{ name.record.get_absolute_url }}">
+            Open
+        </a>
+        Date of Birth : {{ name.record.dob }}
+    </li>
+    {% empty %}
+        None found.
+    {% endfor %}
+</ul>

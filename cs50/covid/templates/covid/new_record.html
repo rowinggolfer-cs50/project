@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h3>
+            New Record / Record Search   
+        </h3>
+        <p>
+        Please enter the following information to create a new record.
+        <br />
+        <em>
+            (The system will check for duplicates via way of date of birth
+            or matching first name / surname combinations)
+        </em>
+        </p>
+        <form action='' method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <table class="table">
+                {{ form.as_table }}
+                <td colspan="2">
+                    <input class="btn btn-warning" type="submit" value="Create New Record">
+                </td>
+            </table>
+
+        </form>
+    </div>
+    <div class="col-md-4">
+        <h3>Possible Duplicates</h3>
+        <div id="duplicates">
+            <!-- ajax will populate this div! -->
+        </div>
+    </div>
+    {% endblock %}
+
+
+    {% block javascript %}
+    <script>
+        $("#id_first_name, #id_surname, #id_dob_year, #id_dob_month, #id_dob_day"
+        ).change(function () {
+            console.log( $(this).val());
+            var sname = $(id_surname).val();
+            var fname = $(id_first_name).val();
+            var year = $(id_dob_year).val();
+            var month = $(id_dob_month).val();
+            var day = $(id_dob_day).val();
+            var url = ('dupes/' + year + '/' + month + '/' + day + '/SN'
+                + sname + '/FN' + fname + '/' );
+            $( "#duplicates" ).load(url)
+        });
+    </script>
+    {% endblock %}

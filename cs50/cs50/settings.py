@@ -29,9 +29,13 @@ with open(os.path.join(SECRETS_DIR, "secret_key.txt")) as f:
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # hostname should fix this.
-DEBUG = socket.gethostname() == "xps-13"
-
-ALLOWED_HOSTS = []
+if socket.gethostname() == "xps-13":
+    DEBUG = True
+    DB_PATH = os.path.join(BASE_DIR, "db.sqlite3")
+else:
+    DEBUG = False
+    ALLOWED_HOSTS = ["rowinggolfer-cs50.me"]
+    DB_PATH = os.path.join("/var/www/sqlitedbs/", "db.sqlite3")
 
 
 # Application definition
@@ -84,7 +88,7 @@ WSGI_APPLICATION = "cs50.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        "NAME": DB_PATH,
     }
 }
 
@@ -126,6 +130,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = "/static/"
+STATIC_ROOT = "static"
 
 # a few fixes for our login functionality
 LOGIN_URL = 'my-login'
@@ -133,3 +138,14 @@ LOGIN_URL = 'my-login'
 # but we don't want that!
 LOGIN_REDIRECT_URL = "homepage"
 LOGOUT_REDIRECT_URL = "homepage"
+
+if not DEBUG:
+    # after running python manage.py check --deploy
+    # I add the following values.
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 5
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_REFERRER_POLICY = "origin"

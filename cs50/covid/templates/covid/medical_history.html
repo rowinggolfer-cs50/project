@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>
+    New Medical History
+</h3>
+<h4>
+    Record for {{ RECORD.name }}.
+</h4>
+<p>
+This will initiate a new medical history. You can edit this at any time.
+</p>
+<form action='' method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <table class="table table-sm">
+        {{ form.as_table|safe }}
+        <td>
+            <a href="{{ view.get_success_url }}" class="btn btn-primary" value="Cancel">
+                Cancel
+            </a>
+        </td>
+        <td>
+        <input class="btn btn-warning" type="submit" 
+                                       value="Create Medical History">
+        </td>
+    </table>
+</form>
+
+
+
+{% endblock %}

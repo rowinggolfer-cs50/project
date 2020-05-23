@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>
+   Pharmacies. 
+</h3>
+<div class="table-responsive">
+<table class="table table-striped table-bordered">
+    <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Town</th>
+        <th>Tel</th>
+        <th>Fax</th>
+        <th>Email</th>
+    </tr>
+    {% for pharmacy in PHARMACIES %}
+    <tr>
+        <td>{{ pharmacy.name }}<br />{{ pharmacy.owner }}</td>
+        <td>{{ pharmacy.address|safe }}</td>
+        <td>{{ pharmacy.town }}</td>
+        <td>{{ pharmacy.tel }}</td>
+        <td>{{ pharmacy.fax }}</td>
+        <td>{{ pharmacy.email_link|safe }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+{% endblock %}

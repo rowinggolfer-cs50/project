@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>
+    Add a note
+</h3>
+<h4>
+    Record {{ RECORD.id }} for {{ RECORD.name }}.
+</h4>
+<p>
+WARNING - notes can not be edited once saved.<br />
+Add as many as you wish.
+</p>
+<form action='' method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <table class="table">
+        {{ form.as_table }}
+        <td>
+            <a href="{{ view.get_success_url }}" class="btn btn-primary" value="Cancel">
+                Cancel
+            </a>
+        </td>
+        <td>
+        <input class="btn btn-warning" type="submit" value="Add this note the Record">
+        </td>
+    </table>
+</form>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<h3>
+    View Addresses
+</h3>
+<h4>
+    Record for {{ RECORD.name }}.
+</h4>
+<p>
+The following addresses are associated with this record.<br />
+Multiple names allow for work, home etc.....<br />
+</p>
+<p>
+The "default" address will be the last one edited.
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Address</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for addr in RECORD.addresses.all %}
+    <tr>
+        <td>{{ addr.formatted_address }}</td>
+        <td>
+            <a href="{{ addr.get_edit_url }}" title="Edit Address">
+                <img src='{% static "covid/pencil.png" %}' />
+                Edit Address
+            </a>
+            &nbsp;
+            &nbsp;
+            <a href="{{ addr.get_delete_url }}" title="Delete Address">
+                <img src='{% static "covid/eraser.png" %}' />
+                Delete Address
+            </a>
+            <td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td colspan="2">
+            <a class="btn btn-warning" 
+               href="{{ RECORD.get_add_address_url }}" title="Add Address">
+            Add a new address to this record.
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a class="btn btn-primary" href="{{ RECORD.get_absolute_url }}">
+    Back to
+    Record
+</a>
+{% endblock %}

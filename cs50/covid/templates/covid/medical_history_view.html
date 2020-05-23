@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% load covid_auth_extras %}
+{% load static %}
+
+{% block content %}
+<h3>
+    View Medical Histories
+</h3>
+<p>
+There are {{ MEDHISTS.count }} medical histories for this patient.
+</p>
+<table class="table table-sm">
+{% for medhist in MEDHISTS %}
+    <tr class="table-primary">
+        <th colspan="2">
+            Medical history taken by 
+            {{ medhist.author }} 
+            {{ medhist.date_created }} 
+        {% if user|has_covid_write_perms %}
+            <a href="{{ medhist.medhist_edit_url }}" 
+               title="Edit this Medical History">
+                <img src='{% static "covid/pencil.png" %}' />
+                Edit Medical History
+            </a>
+        {% endif %}
+        </th>
+    </tr>
+    {{ medhist.details_as_table|safe }}
+{% endfor %}
+</table>
+
+<a href="{{ object.get_absolute_url }}" class="btn btn-primary" value="Cancel">
+    Back to Patient Record
+</a>
+{% endblock %}

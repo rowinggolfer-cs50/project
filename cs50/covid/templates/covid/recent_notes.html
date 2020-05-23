@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% load covid_auth_extras %}
+
+{% block content %}
+<h4>
+    Notes from last 7 days.
+</h4>
+<table class="table table-bordered table-striped table-sm">
+    <tr>
+        <th>
+            Patient
+        </th>
+        <th>
+            Date / Author
+        </th>
+        <th>
+            Note
+        </th>
+    </tr>
+    {% for note in NOTES %}
+    <tr>
+        <td>
+            {{ note.record.name }}
+            <br />
+            <a href="{{ note.record.get_absolute_url }}">
+                Open
+            </a>
+        </td>
+            {{ note.as_table_columns | safe }}
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
