@@ -560,6 +560,7 @@ class Action(models.Model):
 class Pharmacy(models.Model):
     class Meta:
         ordering = ("town", "name")
+        verbose_name_plural = "Pharmacies"
 
     name = models.CharField(max_length=120)
     contractor_code = models.CharField(max_length=10, null=True, default="")
@@ -603,6 +604,9 @@ class Pharmacy(models.Model):
             return "error getting address"
         return ()
 
+    def __str__(self):
+        return f"Pharmacy {self.name} {self.address}"
+
 
 class ActivityGraph(object):
     """
@@ -633,10 +637,9 @@ class ActivityGraph(object):
                     # query returns string object with sqlite
                     try:
                         key = datetime.date.fromisoformat(date_)
-                    except TypeError:  
+                    except TypeError:
                         key = date_
                     self._activities[key] = count
-                        
 
         return self._activities
 
