@@ -197,10 +197,12 @@ import socket
 if socket.gethostname() == 'my-comp':
     DEBUG = True
 else:
-    FALSE
+    DEBUG = False
 
-this could obviously be done as a one-liner.
-DEBUG = socket.gethostname() == "my-comp"
+
+For deployment, there are further settings which will be updated here
+(ALLOWED_HOSTS is one example - that cannot be blank if DEBUG is False), hence
+using the obvious one liner is discouraged.  
 
 I will apply these changes to my project and commit to git again.
 
