@@ -2,6 +2,62 @@
 
 {% block content %}
 
+<h2>
+    CS50 Final Project
+</h2>
+<p>
+    This website introduces the final project of Neil Wallace for the Harvard
+    University CS50 introduction to computing course 2020.
+</p>
+<h4>
+    Project Aim
+</h4>
+<p>
+    I am a dentist, who was prevented from contact with patients during the
+    strict United Kingdom's covid-19 lockdown of April-July 2020.
+    During this period, my colleagues and I shared responsibility for triaging
+    telephone conversations from patients with problems. We needed a way to
+    record and share this information.
+    My final project, therefore, documents the website I created to provide a 
+    secure online database frontend.
+<br />
+<em>
+    For obvious reasons I am unable to share the intranet version of the site
+    which contains sensitive information and patient details etc... However I
+    can confirm it worked very well and my colleagues used it to the great
+    benefit of and patients.
+</em>
+</p>
+<h4>
+    Tools used.
+</h4>
+<p>
+    The website uses the 
+    <a href="https://python.org">Python programming language</a>, 
+    and the 
+    <a href="https://www.djangoproject.com/">Django Web Framwork</a>.
+    <br />
+    The database used in production was 
+    <a href="https://www.postgresql.org/">PostgreSQL</a>
+    <br />
+    <em>
+    NB. for this demonstration version of the website I am using the
+    lightweight
+    <a href="https://sqlite.org/index.html">sqllite3 database</a>
+    which was introduced during the problem set 7 of the CS50 course.
+    </em>
+</p>
+
+<h4>
+    Code
+</h4>
+<p>
+All code is available on my 
+<a href="https://github.com/rowinggolfer-cs50/project">
+github account
+</a>
+</p>
+
 {% if user.is_authenticated %}
 
     <p>
