@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load covid_auth_extras %}
+{% load static %}
+
+{% block nav-items %}
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a href="{% url 'covid-new-record' %}"
+                       title="Create a new record"
+                       class="nav-link" >
+                       New Record
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'covid-patients' %}"
+                       title="Records listed alphabetically."
+                       class="nav-link" >
+                       List Records
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'covid-recent-notes' %}"
+                       title="Recent Notes (last 7 days)"
+                       class="nav-link" >
+                       Recent Notes
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'covid-view-actions' %}"
+                       title="Actions required"
+                       class="nav-link" >
+                       Actions
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle"
+                       href="#"
+                       id="dropdown-resources"
+                       data-toggle="dropdown"
+                       aria-haspopup="true"
+                       aria-expanded="false">
+                        Resources
+                        <span class="caret"></span>
+                    </a>
+                    <div class="dropdown-menu"
+                         aria-labelledby=dropdown-resources>
+                        <a href="{% url 'pharmacy' %}"
+                           title = "pharmacy list" class="dropdown-item">
+                            Pharmacies
+                        </a>
+                        <a href="{% static 'covid/UDC-Referral-Form-V6.docx' %}"
+                                class="dropdown-item">
+                            UDC Referral Form V6 (docx)
+                        </a>
+                        <a href=
+                        "{% static 'covid/SDCEP-MADP-COVID-19-drug-supplement-update-110520.pdf' %}"
+                                class="dropdown-item">
+                            SDCEP Covid-19 guidance (pdf)
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'covid-activity' %}"
+                       title = "Activity Tracker"
+                       class="nav-link" >
+                       Activity Graph
+                    </a>
+                </li>
+            </ul>
+
+{% endblock %}

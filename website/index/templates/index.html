@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
@@ -33,17 +34,17 @@
 </h4>
 <p>
     The website uses the 
-    <a href="https://python.org">Python programming language</a>, 
+    <a href="https://python.org" target="_blank">Python programming language</a>, 
     and the 
-    <a href="https://www.djangoproject.com/">Django Web Framwork</a>.
+    <a href="https://www.djangoproject.com/" target="_blank">Django Web Framwork</a>.
     <br />
     The database used in production was 
-    <a href="https://www.postgresql.org/">PostgreSQL</a>
+    <a href="https://www.postgresql.org/" target="_blank">PostgreSQL</a>
     <br />
     <em>
     NB. for this demonstration version of the website I am using the
     lightweight
-    <a href="https://sqlite.org/index.html">sqllite3 database</a>
+    <a href="https://sqlite.org/index.html" target="_blank">sqllite3 database</a>
     which was introduced during the problem set 7 of the CS50 course.
     </em>
 </p>
@@ -53,30 +54,54 @@
 </h4>
 <p>
 All code is available on my 
-<a href="https://github.com/rowinggolfer-cs50/project">
-github account
+<a href="https://github.com/rowinggolfer-cs50/project" target="_blank">
+CS50 Github Account
 </a>
 </p>
-
+<hr />
+<div class="row">
+<div class="col-md-6">
+    <h3>
+        Technical write up about the project.
+    </h3>
+    <p>
+    Here I document the code for the website and the database, including the 2
+    minute video I submitted to CS50.
+    </p>
+    <p>
+    Click on the image below for the Project's Documentation - which describes
+    in detail how to use Django to create a good looking, versatile website.
+        <a href="{% url 'documentation-homepage' %}">
+            <img class="img-fluid" src="{% static 'images/cs50.png' %}" />
+        </a>
+    </p>
+</div>
+<div class="col-md-6">
+<h3>
+    Demo Version of the Covid Dental Notes Website
+</h3>
 {% if user.is_authenticated %}
 
     <p>
-    Hello {{ user.username }}.
-    Thanks for logging in.<br />
-    The following applications are available.
+    You are logged in as {{ user.username }}.
+    <br />
+    This means you can proceed directly to the site.
     </p>
-    <ul>
-        <li>
-            <a href="{% url 'covid-homepage' %}">
-                Covid Dental Notes
-            </a>
-        </li>
-    </ul>
 
 {% else %}
-
-    Please <a href="{% url 'my-login' %}">Login</a>
+    <p>
+    Note - you will be asked to login to view the Covid Website.<br />
+    Please use "Guest" for both username and password when prompted to do so.
+    </p>
 
 {% endif %}
+    <p>
+    Click on the image below for the demonstration site.
+        <a href="{% url 'covid-homepage' %}">
+            <img class="img-fluid" src="{% static 'images/covid19.jpg' %}" />
+        </a>
+    </p>
 
 {% endblock %}
+</div>
+</div>

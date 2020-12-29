@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "index",
     "covid",
+    "documentation",
 ]
 
 MIDDLEWARE = [
@@ -130,7 +131,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = "/static/"
-STATIC_ROOT = "static"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static/'),
+]
 
 # a few fixes for our login functionality
 LOGIN_URL = 'my-login'
