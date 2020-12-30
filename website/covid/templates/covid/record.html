@@ -138,7 +138,7 @@
     </strong>
     <a href="{{ RECORD.view_record_medhists_url }}" 
         title="View Medical Histories">
-    <img src='{% static "covid/eyeball.png" />
+        <img src='{% static "covid/eyeball.png" %}'/>
     View All Medical Histories
     </a>
 {% endif %}
@@ -148,7 +148,7 @@
     </strong>
     {% if user|has_covid_write_perms %}
         <a href="{{ RECORD.get_add_mh_url }}" title="Add a new Medical History">
-            <img src='{% static "covid/pencil.png" />
+            <img src='{% static "covid/pencil.png" %}' />
             Add a New Medical History
         </a>
     {% endif %}
