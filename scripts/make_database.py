@@ -139,6 +139,14 @@ def random_action():
         ["phone patient back", "consult with pt's GP", "Refer to Hospital"]
     )
 
+def modify_task_dates():
+    from covid.models import Record
+    for record_obj in Record.objects.all():
+        for task in record_obj.actions:
+            task.date_edited = random_note_date(
+                    record_obj.date_created.date()
+                )
+            task.save()
 
 def create_records():
     from covid.models import (
@@ -205,3 +213,4 @@ if __name__ == "__main__":
     setup_django_environment()
     create_guest_user()
     create_records()
+    modify_task_dates()

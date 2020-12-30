@@ -532,7 +532,7 @@ class Action(models.Model):
     action = models.CharField(max_length=240)
     is_urgent = models.BooleanField(default=False)
     is_completed = models.BooleanField(default=False)
-    date_edited = models.DateTimeField(auto_now=True)
+    date_edited = models.DateTimeField(auto_now_add=True)
 
     def get_edit_url(self):
         return reverse("covid-action-edit", args=[str(self.id)])
