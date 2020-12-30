@@ -12,13 +12,16 @@ urlpatterns = [
     ),
     path("records/", views.RecordListView.as_view(), name="covid-records"),
     path(
-        "record/add/dupes/<int:year>/<int:month>/<int:day>/"
-        "<slug:sname>/<slug:fname>/",
+        "duplicates/<int:year>/<int:month>/<int:day>/" "<slug:sname>/<slug:fname>/",
         views.DuplicatesView.as_view(),
-        name="covid-duplicates"
+        name="covid-duplicates",
     ),
+    path("record/add/", views.NewRecordView.as_view(), name="covid-new-record"),
+    path("search", views.SearchView.as_view(), name="covid-search"),
     path(
-        "record/add/", views.NewRecordView.as_view(), name="covid-new-record"
+        "search-result/<int:year>/<int:month>/<int:day>/<slug:sname>/<slug:fname>/",
+        views.SearchResultView.as_view(),
+        name="covid-search-result",
     ),
     path(
         "record/edit/<int:pk>/",

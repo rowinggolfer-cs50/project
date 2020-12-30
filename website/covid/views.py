@@ -12,6 +12,7 @@ from django.views.generic import (
 from django.utils.html import escape
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
 
 from django.conf import settings
 
@@ -62,9 +63,7 @@ class RecentNotesView(mixins.UserCheckMixin, ListView):
 
     def get_queryset(self):
         d = datetime.date.today() - datetime.timedelta(days=7)
-        return models.Note.objects.filter(date_created__gt=d).order_by(
-            "-date_created"
-        )
+        return models.Note.objects.filter(date_created__gt=d).order_by("-date_created")
 
 
 class NamesView(mixins.UserCheckMixin, DetailView):
@@ -287,6 +286,61 @@ class EmailEditView(mixins.CovidWriteRecordsMixin, UpdateView):
 
 
 @method_decorator(csrf_exempt, name="dispatch")
+class SearchView(mixins.CovidWriteRecordsMixin, FormView):
+    context_object_name = "RECORD"
+    form_class = forms.SearchForm
+    template_name = "covid/search.html"
+    year, month, day = (0, 0, 0)
+    first_name = "-"
+    surname = "-"
+
+    def get_success_url(self):
+        return reverse(
+            "covid-search-result",
+            args=[
+                self.year,
+                self.month,
+                self.day,
+                "SN" + self.surname,
+                "FN" + self.first_name,
+            ],
+        )
+
+    def form_valid(self, form):
+        dob = form.cleaned_data["dob"]
+        self.year = dob.year
+        self.month = dob.month
+        self.day = dob.day
+        self.first_name = form.cleaned_data["first_name"]
+        self.surname = form.cleaned_data["surname"]
+        response = super().form_valid(form)
+        return response
+
+
+class SearchResultView(mixins.CovidWriteRecordsMixin, ListView):
+    context_object_name = "RECORDS"
+    template_name = "covid/search_results.html"
+
+    def get_queryset(self):
+        dob = datetime.date(
+            self.kwargs["year"], self.kwargs["month"], self.kwargs["day"]
+        )
+        sname = self.kwargs["sname"][2:]
+        fname = self.kwargs["fname"][2:]
+
+        if dob != datetime.date(2020, 1, 1):  # default
+            for obj in models.Record.objects.filter(dob=dob):
+                yield obj
+        for obj in (
+            models.Name.objects.filter(surname__istartswith=sname)
+            .filter(first_name__istartswith=fname)
+            .order_by("surname")
+            .order_by("first_name")
+        ):
+            yield obj.record
+
+
+@method_decorator(csrf_exempt, name="dispatch")
 class DuplicatesView(mixins.UserCheckMixin, TemplateView):
     """
     return a list of duplicates
@@ -318,7 +372,6 @@ class DuplicatesView(mixins.UserCheckMixin, TemplateView):
 @method_decorator(csrf_exempt, name="dispatch")
 class NewRecordView(
     mixins.CovidWriteRecordsMixin,
-    # mixins.AjaxableResponseMixin,
     FormView,
 ):
     context_object_name = "RECORD"

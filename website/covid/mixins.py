@@ -54,6 +54,7 @@ class CovidWriteRecordsMixin(UserCheckMixin):
     """
     A mixin to check user belongs to the group 'covid-write-permissions'
     """
+
     user_check_failure_path = reverse_lazy("covid-write-permission-help")
     GROUP_NAME = "covid-write-permission"
 
@@ -62,8 +63,7 @@ class CovidWriteRecordsMixin(UserCheckMixin):
         user = self.request.user
         if user and user.is_authenticated:
             initial["user"] = user
-            initial["author"] = \
-                user.get_full_name() or user.get_username()
+            initial["author"] = user.get_full_name() or user.get_username()
         return initial
 
     def check_user(self, user):
@@ -73,8 +73,7 @@ class CovidWriteRecordsMixin(UserCheckMixin):
             if not is_member:
                 messages.error(
                     self.request,
-                    "Sorry, you are not member of group '%s'"
-                    % self.GROUP_NAME,
+                    "Sorry, you are not member of group '%s'" % self.GROUP_NAME,
                 )
             return is_member
         except Group.DoesNotExist:

@@ -1,0 +1,62 @@
+{% extends "covid/base.html" %}
+{% block content %}
+<h3>
+   Search Results
+</h3>
+<div class="table-responsive">
+<table class="table table-sm table-striped table-bordered table-hover">
+    <tr>
+        <th>Name</th>
+        <th>Actions</th>
+        <th>Address</th>
+        <th>Date of Birth</th>
+        <th>Dentist</th>
+        <th>Created</th>
+        <th></th>
+    </tr>
+    {% for record in RECORDS %}
+    <tr>
+        <td>{{ record.name }}</td>
+        <td>
+        
+    {% if record.has_urgent_actions %}
+        <a href="{{ record.view_all_actions_url }}" 
+           title="{{ record.actions_as_list|safe }}">
+        <img src="{{ STATIC_URL }}covid/urgent.png"/>
+        </a>
+    {%elif record.has_actions %}
+        <a href="{{ record.view_all_actions_url }}" 
+           title="{{ record.actions_as_list|safe }}">
+            <img src="{{ STATIC_URL }}covid/pencil.png" />
+        </a>
+    {% else %}
+        -
+    {% endif %}
+        </td>
+        <td>{{ record.address }}</td>
+        <td>{{ record.dob }}</td>
+        <td>{{ record.dentist }}</td>
+        <td>{{ record.date_created }}</td>
+        <td>
+            <a class="btn btn-primary" href="{{ record.get_absolute_url }}">
+                Open {{record.id }}
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+
+<p>
+    <a href="{% url "covid-search" %}" class="btn btn-primary">
+        NEW SEARCH
+    </a>
+    &nbsp;
+    &nbsp;
+    &nbsp;
+    <a href="{% url "covid-new-record" %}" class="btn btn-warning">
+       CREATE NEW RECORD
+    </a>
+</p>
+
+{% endblock %}

@@ -18,18 +18,20 @@ class PatientLoginForm(forms.Form):
 class NewRecordForm(forms.Form):
     title = forms.CharField(label="Title", max_length=20, required=False)
     first_name = forms.CharField(label="First Name (required)", max_length=40)
-    middle_name = forms.CharField(
-        label="Middle Name", max_length=40, required=False
-    )
+    middle_name = forms.CharField(label="Middle Name", max_length=40, required=False)
     surname = forms.CharField(label="Surname (required)", max_length=40)
     dob = forms.DateField(
         label="Date of Birth", widget=forms.SelectDateWidget(years=YEARS)
     )
-    dentist = forms.CharField(
-        label="Regular Dentist", max_length=100, required=False
-    )
-    telephone = forms.CharField(
-        label="Telephone number", max_length=20, required=False
+    dentist = forms.CharField(label="Regular Dentist", max_length=100, required=False)
+    telephone = forms.CharField(label="Telephone number", max_length=20, required=False)
+
+
+class SearchForm(forms.Form):
+    first_name = forms.CharField(label="First Name", max_length=40, required=False)
+    surname = forms.CharField(label="Surname", max_length=40, required=False)
+    dob = forms.DateField(
+        label="Date of Birth", widget=forms.SelectDateWidget(years=YEARS)
     )
 
 
@@ -164,9 +166,7 @@ class MedHistForm(forms.ModelForm):
         model = models.MedicalHistory
         fields = ["author", "medication_text"]
         labels = {"medication_text": "Medications"}
-        widgets = {
-            "medication_text": forms.Textarea(attrs={"cols": 40, "rows": 6})
-        }
+        widgets = {"medication_text": forms.Textarea(attrs={"cols": 40, "rows": 6})}
 
     def __init__(self, *args, **kwargs):
         """

@@ -3,15 +3,10 @@
 <div class="row">
     <div class="col-md-8">
         <h3>
-            New Record   
+            Record Search   
         </h3>
         <p>
-        Please enter the following information to create a new record.
-        <br />
-        <em>
-            (The system will check for duplicates via way of date of birth
-            or matching first name / surname combinations)
-        </em>
+        Please enter some of the following information to search records.
         </p>
         <form action='' method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -19,14 +14,15 @@
             <table class="table">
                 {{ form.as_table }}
                 <td colspan="2">
-                    <input class="btn btn-warning" type="submit" value="Create New Record">
+                    <input class="btn btn-warning" type="submit" 
+                           value="Search Records">
                 </td>
             </table>
 
         </form>
     </div>
     <div class="col-md-4">
-        <h3>Possible Duplicates</h3>
+        <h3>Possible Matches</h3>
         <div id="duplicates">
             <!-- ajax will populate this div! -->
         </div>

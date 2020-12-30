@@ -118,7 +118,7 @@ class Email(models.Model):
 
 class Record(models.Model):
     class Meta:
-        ordering = ("-id",)
+        ordering = ("-date_created",)
 
     dob = models.DateField()
     chi = models.CharField(max_length=10, null=True, blank=True)
@@ -150,15 +150,11 @@ class Record(models.Model):
 
     @property
     def all_addresses(self):
-        return "<br />\n".join(
-            [ad.formatted_address() for ad in self.addresses.all()]
-        )
+        return "<br />\n".join([ad.formatted_address() for ad in self.addresses.all()])
 
     @property
     def telephone_numbers(self):
-        return "<br />\n".join(
-            [escape(t.number) for t in self.telephones.all()]
-        )
+        return "<br />\n".join([escape(t.number) for t in self.telephones.all()])
 
     @property
     def actions(self):
@@ -212,9 +208,9 @@ class Record(models.Model):
             ("Telephone(s)", self.telephone_numbers),
             ("Email(s)", self.email_addresses),
         ):
-            html += (
-                "<tr><th class='text-right'>%s :</th><td>%s</td></tr>\n"
-                % (key, value)
+            html += "<tr><th class='text-right'>%s :</th><td>%s</td></tr>\n" % (
+                key,
+                value,
             )
         return html
 
@@ -259,9 +255,7 @@ class Record(models.Model):
 
     def medhist_edit_url(self):
         try:
-            return reverse(
-                "covid-mh-edit", args=[str(self.current_medical_history.id)]
-            )
+            return reverse("covid-mh-edit", args=[str(self.current_medical_history.id)])
         except AttributeError as exc:  # no mh as yet?
             print(exc)
             return ""
@@ -367,7 +361,7 @@ class Record(models.Model):
 
 class Note(models.Model):
     class Meta:
-        ordering = ["id"]
+        ordering = ("date_created",)
 
     record = models.ForeignKey(Record, on_delete=models.CASCADE)
     note = models.TextField()
