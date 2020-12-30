@@ -13,8 +13,6 @@ This is in 3 parts.
    Django3.0.4, and sandbox that python environment using virtualenv.
    I wrote this up as a tutorial.
 3. An example of an AJAX call using jquery.load() to search for records.
-4. Finally, an Android application which alerts all users when new 
-   activity on the website requires their attention.
 
 # the necessity
 
