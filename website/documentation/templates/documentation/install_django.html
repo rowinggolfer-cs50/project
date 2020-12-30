@@ -1,0 +1,52 @@
+{% extends 'documentation/base.html' %}
+
+{% block content %}
+
+<h2>
+Install django - the web framework for python
+</h2>
+install_django.html
+<p>
+<strong>
+IMPORTANT do this from within the an activated virtualenv
+<br />
+we do not wish to add extraneous packages to our system python!
+</strong>
+
+So test the venv is running, and therefore we are using "pip" from within that
+environment..
+</p>
+<pre>
+(venv) me@my-comp ~/project $ which pip
+/home/me/project/venv/bin/pip
+</pre>
+
+<p>
+this proves it!
+<br />
+now check pip is latest version, and upgrade if not
+</p>
+<pre>
+(venv) me@my-comp ~/project $ pip install --upgrade pip
+Requirement already up-to-date: pip in ./venv/lib/python3.8/site-packages (20.1)
+
+
+(venv) me@my-comp ~/project $ pip install django
+</pre>
+
+<h4>
+    OPTIONAL STEP
+</h4>
+<p>
+to test all is well with your django install do the following
+</p>
+<pre>
+(venv) me@my-comp ~/project $ python
+Python 3.8.2 (default, May  3 2020, 18:03:28) 
+[GCC 9.2.1 20191008] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import django
+>>> django.__version__
+'3.0.5'
+</pre>
+{% endblock %}

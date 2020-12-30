@@ -1,0 +1,174 @@
+{% extends 'documentation/base.html' %}
+{% block content %}
+<h2>
+Create Your Website with Django.
+</h2>
+03.html
+<p>
+Finally - we are ready to start our django website ("project").
+<br />
+<em>
+    (My project is called simply "cs50")
+</em>
+</p>
+<pre>
+        (venv) me@my-comp ~/project $ django-admin startproject cs50
+</pre>
+
+<p>
+this will create a directory cs50 with the following contents
+<br />
+(We will examine these files later.)
+</p>
+
+<pre>
+        (venv) me@my-comp ~/project (master #%) $ tree cs50/
+        cs50/
+        ├── cs50
+        │   ├── asgi.py
+        │   ├── __init__.py
+        │   ├── settings.py
+        │   ├── urls.py
+        │   └── wsgi.py
+        ├── manage.py
+        └── db.sqlite3
+
+1 directory, 7 files
+</pre>
+
+<h4>
+1 directory, 7 files
+</h4>
+<p>
+Let's just take a look at what django has provided
+out of the box.
+</p>
+<p>
+<em>
+Note: We have 2 folders called cs50.
+</em>
+<br />
+cs50 is simply the PROJECT_NAME I chose when running 
+<pre> django-admin startproject PROJECT_NAME
+</pre>
+having 2 such folders is good design, which will become clear one we start our
+"apps", however it does lead to some unavoidable ambiguity in this documentation.
+<br />
+I will differentiate by referring to the parent directory as "root cs50".
+</p>
+
+<h4>
+    Files and Subfolders in "root cs50"
+</h4>
+in the "root cs50"  folder, we have 2 files and a folder.
+<h5>
+SubFolder - cs50
+</h5>
+<p>
+in this "project cs50" folder, we have 5 files.
+</p>
+<dl>
+    <dt> __init__.py</dt>
+    <dd>
+        this file is blank - but confirms that this directory is an importable 
+        python package
+    </dd>
+    <dt>
+        asgi.py and wsgi.py
+    </dt>
+    <dd>
+        These files are used for deploying to webservers. wsgi has been around for
+        years. asgi is a new emerging standard (with with I am unfamiliar).
+        We don't really need to touch these files, although it can be useful to put code
+        therein to confirm you are in a deployed environment and overwrite some
+        settings. But we are not at that stage yet, so we can leave them alone!
+    </dd>
+    <dt>
+        urls.py
+    </dt>
+    <dd>
+        out of the box, django has one url pattern in this file.
+        <br />
+        <code>
+        urlpatterns = [path('admin/', admin.site.urls),]     
+        </code>
+        <br />
+        urls.py is where we build our hyperlinks for the website.
+        this default file will catch 
+        http://127.0.0.1:8000/admin/
+    </dd>
+<dt>
+settings.py.
+</dt>
+<dd>
+This file is extremely important, and must be configured correctly for oue new
+website to function correctly and securely.
+</dd>
+</dl>
+<h4>
+<h5>
+File 1 - db.sqlite3
+</h5>
+<p>
+Our sqlite3 database. For a small website, sqlite is good fit, as it makes for
+very easy deployment. django can use a variety of industry standard databases
+such as postgresql, mariadb and mysql, but that is beyond the scope of this
+project. 
+<br />
+    <a href='{% url "documentation-sqlite" %}'>
+     - more details about how django uses databases and sqlite3
+    </a>
+</p>
+<h5>
+File 2 - manage.py      
+</h5>
+<p>
+This is an important file, by used only by the developer.
+<br />
+A full list of commands you can issue with manage.py can be found by issuing the
+command.
+</p>
+<pre>
+    (venv) me@my-comp ~/project $ python manage.py help
+    Type 'manage.py help <subcommand>' for help on a specific subcommand.
+    Available subcommands:
+    [auth]
+        changepassword
+        createsuperuser
+    [contenttypes]
+        remove_stale_contenttypes
+    [django]
+        check
+        compilemessages
+        createcachetable
+        dbshell
+        diffsettings
+        dumpdata
+        flush
+        inspectdb
+        loaddata
+        makemessages
+        makemigrations
+        migrate
+        sendtestemail
+        shell
+        showmigrations
+        sqlflush
+        sqlmigrate
+        sqlsequencereset
+        squashmigrations
+        startapp
+        startproject
+        test
+        testserver
+    [sessions]
+        clearsessions
+    [staticfiles]
+        collectstatic
+        findstatic
+        runserver
+</pre>
+
+
+
+{% endblock %}

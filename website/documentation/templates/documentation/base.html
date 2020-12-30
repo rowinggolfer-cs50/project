@@ -1,1 +1,12 @@
 {% extends 'base.html' %}
+
+{% block footer %}
+<br />
+<hr />
+<div class="text-center">
+    <a href='{% url "documentation-homepage" %}'
+       title="Return to documentation homepage">
+        Documentation Homepage
+    </a>
+</div>
+{% endblock %}

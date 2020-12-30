@@ -1,5 +1,253 @@
 {% extends 'documentation/base.html' %}
-
+{% load static %}
 {% block content %}
-<h1>It works!</h1>
+<h2>
+Project Documentation
+</h2>
+<p>
+As already noted, my project is a website for dental professionals with a shared
+patient set to record discussions and therefore deliver consistent advice during
+the covid-19 pandemic.
+</p>
+<p>
+I did this using a website coded in 
+<a href="https://www.djangoproject.com/" target="_blank">
+Django</a>
+.
+<br />
+The entire website codebase is available on my 
+<a href="https://github.com/rowinggolfer-cs50/project" target="_blank">
+CS50 Github Account
+</a>
+</p>
+<p>
+Setting up a new website such as this is an everyday event for a web programmer.
+<br />
+However, it is important (for future maintenance of the website) to try and
+follow best practice and conventions specified by the django developers.
+I believe I am doing this, by separating my main "home" or "index" page into a
+separate "app". This keeps the root project directory as clean as possible, and
+allows for reuse.
+</p>
+<p>
+Below I summarise the steps one would take to get this up and running.
+</p>
+<h3>
+Summary of steps to get a very basic django website running.
+</h3>
+<ol>
+    <li>
+    Create a python virtualenv (optional, but HIGHLY recommended).
+
+<pre>
+    ~/ $ virtualenv -p python3 venv
+</pre>
+    <a href='{% url "documentation-create-venv" %}'>
+     - more details about virtualenv
+    </a>
+    <hr />
+    </li>
+
+    <li>
+    activate the virtualenv
+<pre>
+    ~/ $ source venv/bin/activate
+</pre>
+    <hr />
+    </li>
+
+    <li>
+    install django into that virtual environment
+<pre>
+    (venv) ~/ $ pip install django
+</pre>
+    <a href='{% url "documentation-install-django" %}'>
+     - more details about installing django.
+    </a>
+    <hr />
+    </li>
+
+    <li>
+    choose a name and start your project
+<pre>
+    (venv) ~/ $ django-admin startproject my-website
+</pre>
+    <a href='{% url "documentation-start-django" %}'>
+     - more details about what this does and the files created.
+    </a>
+    <hr />
+    </li>
+
+    <li>
+    check everything is in order by running the test server
+<pre>
+    (venv) ~/ $ cd my-website
+    (venv) ~/ $ python manage.py runserver 
+</pre>
+    and visit the site using a browser.
+<img src='{% static "images/howto-image-001.png" %}'
+     alt="Screenshot of a bare django test site"
+     width="200px"
+     height="200px"
+     />
+    <br />
+    <a href='{% url "documentation-runserver" %}'>
+     - more details about the test server.
+    </a>
+    <hr />
+    <li>
+    run migrations for the first time, so that your database is created.
+<pre>
+    (venv) ~/my-website $ python manage.py migrate
+</pre>
+    <a href='{% url "documentation-sqlite" %}'>
+     - more details about how django uses databases and sqlite3
+    </a>
+    <hr />
+    </li>
+
+    <li>
+    create a superuser for yourself so you can use the admin functionality
+<pre>
+    (venv) ~/my-website $ python manage.py createsuperuser
+</pre>
+    <hr />
+    </li>
+
+    <li>
+        <strong>IMPORTANT</strong>
+    keep your secrets safe. (move SECRET_KEY out of settings.py)
+<pre>
+    (venv) ~/ $ cd my-website
+    (venv) ~/my-website $ mkdir secrets
+    (venv) ~/my-website $ grep SECRET_KEY settings.py &gt; secrets/secret_key.txt
+</pre>
+    and edit settings.py putting in the following lines.
+<pre>
+    # Use a separate file for the secret key
+        with open('/path/to/secrets/secret_key.txt') as f:
+    SECRET_KEY = f.read().strip()
+</pre>
+    <br />
+    <a href='{% url "documentation-security" %}'>
+     - more details about security 
+    </a>
+    <hr />
+    </li>
+
+    <li>
+        <strong>
+            Finally - Add Some Content!
+        </strong>
+        <br />
+        Django's preferred way of having content is to create "apps" rather
+        than create more files in that root directory.<br />
+        This is confusing at first, but my default is now to add an app named 
+        "index"
+<pre>
+    (venv) ~/my-website $ python manage.py startapp index
+</pre>
+        This creates a subfolder with a few python files in it.<br />
+        models.py, tests.py, views.py etc....<br />
+        This folder is where we will begin to put our content.
+        <br />
+
+        <a href='{% url "documentation-indexapp" %}'>
+        - more details about apps 
+        </a>
+    <hr />
+    </li>
+
+    <li>
+    make the project aware of your new app by adding "index" to 
+    INSTALLED_APPS in settings.py
+    <br />
+    ie:
+    <pre>
+        INSTALLED_APPS = [
+            "django.contrib.admin",
+            ...
+            ...
+            "index",
+        ]
+    </pre>
+
+    <hr />
+    </li>
+
+    <li>
+    create a file named urls.py to the index folder. Give it the following
+    content.
+<pre>
+    from django.urls import path
+    import .views
+    urlpatterns = [path('', views.IndexView.as_view(), name="homepage")]
+</pre>
+    <hr />
+    </li>
+
+    <li>
+    edit views.py in the index folder. Give it the following content.
+<pre>
+    from django.views.generic import TemplateView
+    class IndexView(TemplateView):
+        template_name = "index.html"
+</pre>
+    <hr />
+    </li>
+
+    <li>
+    create a subfolder named "templates" in the index folder, and put a
+    simple index.html file inside it.<br />
+    This needn't be fancy at this point - I tend to use the old apache webserver
+    favourite.
+    <pre>
+        &lt;h1&gt;It Works!&lt;/h1&gt;
+    </pre>
+    Note - templates are much more powerful than plain html. They can be
+    inherited from, include logic, for loops and conditionals etc...
+    <hr />
+    </li>
+
+    <li>
+    edit urls.py in your main project folder, so it looks like this.
+<pre>
+    from django.contrib import admin                                                
+    from django.urls import include, path
+    urlpatterns = [                                                                 
+        path('', include('index.urls'),
+                path('admin/', admin.site.urls),                                            
+    ]      
+</pre>
+    <hr />
+    </li>
+
+    <li>
+    test everything is correct by running the test server.
+<pre>
+    (venv) ~/my-website $ python manage.py runserver
+</pre>
+    and, if no error messages, visit http://127.0.0.1:8000 with a browser.
+    </li>
+</ol>
+    <p>
+    <strong>
+So that's a very brief synopsis of the bare minimum to get a website up and
+running with django. Obviously my project involved much more than this, with
+database models, forms, AJAX calls etc...<br />
+Please peruse the 
+<a href="https://github.com/rowinggolfer-cs50/project" target="_blank">
+Git Repo
+</a>
+for that. All the code is there.
+    </strong>
+    <br />
+    <br />
+    <br />
+Comments / Corrections to 
+<a href="mailto:rowinggolfer+cs50@gmail.com">
+    rowinggolfer+cs50@gmail.com
+</a>
+Thanks for visiting!
+    </p>
 {% endblock %}

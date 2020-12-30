@@ -1,0 +1,67 @@
+{% extends 'documentation/base.html' %}
+
+{% block content %}
+<h2>
+Virtualenv
+</h2>
+venv.html
+<p>
+Create a virtualenv for python.
+<br />
+This is sensible as it helps keep your system's python environment clean.
+A virtualenv is created by default without any access to site-packages
+and other locally installed modules. This is useful.
+<br />
+This also ensures you are aware what third party modules you have used,
+which is essential for deployment of your django project to a server
+</p>
+<h4>
+examples in creating a virtualenv
+</h4>
+<p>
+(choose which python to "clone" )
+</p>
+<pre>
+me@my-comp ~/project $ virtualenv venv
+OR
+me@my-comp ~/project $ virtualenv -p python3 venv
+OR
+me@my-comp ~/project $ virtualenv -p /usr/local/bin/python3.8 venv
+</pre>
+
+<p>
+now the project directory looks like this.
+(tree is a nice tool for seeing directory structures. -L flag indicates depth)
+</p>
+<pre>
+me@my-comp ~/project $ tree -L 2
+.
+└── venv
+    ├── bin
+    ├── include
+    ├── lib
+    └── share
+</pre>
+
+<p>
+start your virtual environment and check that the correct python is in use.
+</p>
+<pre>
+me@my-comp ~/project $ source venv/bin/activate
+
+(venv) me@my-comp ~/project $ which python
+me@my-comp ~/project/venv/bin/python
+</pre>
+<p>
+<h4>
+Note
+</h4>
+<ul>
+<li>
+"(venv)" reassures us that we are in a python virtual environment.
+</li>
+<li>
+the executable returned by "which python" confirms it.
+</li>
+</ul>
+{% endblock %}

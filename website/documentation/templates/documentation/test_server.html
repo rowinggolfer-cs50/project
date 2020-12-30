@@ -1,0 +1,44 @@
+{% extends 'documentation/base.html' %}
+{% load static %}
+{% block content %}
+<h2>
+    Run the test server to show your bare website.
+</h2>
+06.html
+<p>
+Now we are ready to run the django test server, and visit the 
+website it produces in our web-browser.
+<br />
+to do this, cd into the new cs50 directory and run the command
+"python manage.py runserver" (something we will be doing a lot!)
+</p>
+<pre>
+(venv) me@my-comp ~/project $ cd cs50
+(venv) me@my-comp ~/project/cs50 $ python manage.py runserver
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 17 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, contenttypes, sessions.
+Run 'python manage.py migrate' to apply them.
+
+May 03, 2020 - 18:36:18
+Django version 3.0.5, using settings 'cs50.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+</pre>
+
+<p>
+With that process running, 
+open a webbrowser and navigate to 
+<a href="http://127.0.0.1:8000">http://127.0.0.1:8000</a>
+<br />
+You should see something like this:
+<br />
+<img src='{% static "images/howto-image-001.png" %}'
+     alt="Screenshot of a bare django test site"
+     class="img-fluid"
+     />
+</p>
+{% endblock %}
